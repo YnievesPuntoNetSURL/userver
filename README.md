@@ -1,9 +1,8 @@
 # YnievesPuntoNet µServer (PHP-FPM 8.1, Nginx 1.24 on Alpine Linux 3.18)
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/ynievespuntonetsurl/userver.svg)](https://hub.docker.com/r/ynievespuntonetsurl/userver/)
-[![Docker Stars](https://img.shields.io/docker/stars/ynievespuntonetsurl/userver.svg)](https://hub.docker.com/r/ynievespuntonetsurl/userver/)
-[![Docker Automated build](https://img.shields.io/docker/automated/ynievespuntonetsurl/userver.svg)](https://hub.docker.com/r/ynievespuntonetsurl/userver/)
-[![Docker Build Status](https://img.shields.io/docker/build/ynievespuntonetsurl/userver.svg)](https://hub.docker.com/r/ynievespuntonetsurl/userver/)
+[![Docker Pulls](https://img.shields.io/docker/pulls/ynievesdotnet/userver.svg)](https://hub.docker.com/r/ynievesdotnet/userver/)
+[![Docker Stars](https://img.shields.io/docker/stars/ynievesdotnet/userver.svg)](https://hub.docker.com/r/ynievesdotnet/userver/)
+[![Docker Automated build](https://img.shields.io/docker/automated/ynievesdotnet/userver.svg)](https://hub.docker.com/r/ynievesdotnet/userver/)
 
 ![µServer 1.0.0](https://img.shields.io/badge/µServer-1.0.0-brightgreen.svg)
 ![alpine 3.18](https://img.shields.io/badge/alpine-3.18-brightgreen.svg)
