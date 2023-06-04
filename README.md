@@ -32,13 +32,13 @@ This app server container image is optimized for production environments. It has
 
 Start the Docker container:
 
-    docker run -p 8000:80 ynievesdotnet/userver
+    docker run -p 8000:80 ynievesdotnet/userver:latest
 
-See the PHP info on <http://localhost:8000>, or the static html page on <http://localhost/test.html>
+See the PHP info on <http://localhost:8000>, or the static html page on <http://localhost:8000/test.html>
 
 Or mount your own code to be served by PHP-FPM & Nginx
 
-    docker run -p 8000:80 -v ~/php_app_code:/var/www/html ynievesdotnet/userver
+    docker run -p 8000:80 -v ~/php_app_code:/var/www/html ynievesdotnet/userver:latest
 
 ## Configuration
 
@@ -47,17 +47,15 @@ If you want to extend or customize that you can do so by mounting a configuratio
 
 Nginx configuration:
 
-    docker run -v "./nginx-server.conf:/etc/nginx/conf.d/server.conf" ynievesdotnet/userver
+    docker run -v "./nginx-server.conf:/etc/nginx/conf.d/server.conf" ynievesdotnet/userver:latest
 
 PHP configuration:
 
-    docker run -v "./php-setting.ini:/etc/php81/conf.d/settings.ini" ynievesdotnet/userver
+    docker run -v "./php-setting.ini:/etc/php81/conf.d/settings.ini" ynievesdotnet/userver:latest
 
 PHP-FPM configuration:
 
-    docker run -v "./php-fpm-settings.conf:/etc/php8/php-fpm.d/server.conf" ynievesdotnet/userver
-
-_Note: Because `-v` requires an absolute path I've added `pwd` in the example to return the absolute path to the current directory_
+    docker run -v "./php-fpm-settings.conf:/etc/php8/php-fpm.d/server.conf" ynievesdotnet/userver:latest
 
 ## How to use with Docker Composer
 
@@ -68,7 +66,7 @@ You can use this image with Docker Composer, just create a `docker-compose.yml` 
     services:
         name_app:
             container_name: name_app
-            image: ynievespuntonetsurl/userver:latest
+            image: ynievesdotnet/userver:latest
             restart: unless-stopped
             expose:
             - "80"
