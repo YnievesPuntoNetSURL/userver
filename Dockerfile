@@ -44,6 +44,7 @@ RUN apk add --no-cache \
   php81-phar \
   php81-session \
   php81-xml \
+  php81-tokenizer \
   php81-xmlreader \
   php81-zip \
   supervisor \
