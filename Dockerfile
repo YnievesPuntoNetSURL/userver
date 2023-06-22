@@ -41,6 +41,7 @@ RUN apk add --no-cache \
   php81-openssl \
   php81-pcntl \
   php81-pecl-imagick \
+  php81-fileinfo \
   php81-phar \
   php81-session \
   php81-xml \
