@@ -1,5 +1,5 @@
 # µServer, for deploy php applications for YnievesPuntoNet SURL
-ARG ALPINE_VERSION=3.18
+ARG ALPINE_VERSION=3.15
 
 # Base Image
 FROM alpine:${ALPINE_VERSION}
@@ -7,7 +7,7 @@ FROM alpine:${ALPINE_VERSION}
 # Labels
 LABEL maintainer="YnievesPuntoNet S.U.R.L. <ynieves@ynieves.net>"
 LABEL version="1.0.0"
-LABEL description="Alpine 3.18, PHP 8.1 FPM with Nginx 1.22, Composer, NodeJS, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache"
+LABEL description="Alpine 3.15, PHP 7.4 FPM with Nginx 1.20, Composer, NodeJS, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache"
 
 # Setup document root
 WORKDIR /var/www/html
@@ -15,7 +15,6 @@ WORKDIR /var/www/html
 # Install packages and remove default server definition
 RUN apk add --no-cache \
   curl \
-  icu-data-full \
   nginx \
   nginx-mod-http-geoip \
   nginx-mod-http-brotli \
@@ -24,37 +23,37 @@ RUN apk add --no-cache \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
-  php81 \
-  php81-bcmath \
-  php81-ctype \
-  php81-curl \
-  php81-dom \
-  php81-exif \
-  php81-fpm \
-  php81-gd \
-  php81-iconv \
-  php81-intl \
-  php81-mbstring \
-  php81-mysqli \
-  php81-pdo_mysql \
-  php81-pdo_pgsql \
-  php81-opcache \
-  php81-openssl \
-  php81-pcntl \
-  php81-pecl-imagick \
-  php81-fileinfo \
-  php81-phar \
-  php81-session \
-  php81-simplexml \
-  php81-tokenizer \
-  php81-xml \
-  php81-xmlreader \
-  php81-xmlwriter \
-  php81-zip \
+  php7 \
+  php7-bcmath \
+  php7-ctype \
+  php7-curl \
+  php7-dom \
+  php7-exif \
+  php7-fpm \
+  php7-gd \
+  php7-iconv \
+  php7-intl \
+  php7-mbstring \
+  php7-mysqli \
+  php7-pdo_mysql \
+  php7-pdo_pgsql \
+  php7-opcache \
+  php7-openssl \
+  php7-pcntl \
+  php7-pecl-imagick \
+  php7-fileinfo \
+  php7-phar \
+  php7-session \
+  php7-simplexml \
+  php7-tokenizer \
+  php7-xml \
+  php7-xmlreader \
+  php7-xmlwriter \
+  php7-zip \
   supervisor \
   yarn \
-  libssl3=3.1.1-r1 \
-  libcrypto3=3.1.1-r1
+  libssl3 \
+  libcrypto3
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -65,8 +64,8 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
-COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
-COPY config/php.ini /etc/php81/conf.d/custom.ini
+COPY config/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
+COPY config/php.ini /etc/php7/conf.d/custom.ini
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
