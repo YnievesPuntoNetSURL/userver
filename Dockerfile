@@ -53,8 +53,8 @@ RUN apk add --no-cache \
   php81-zip \
   supervisor \
   yarn \
-  libssl3=3.1.1-r1 \
-  libcrypto3=3.1.1-r1
+  libssl3 \
+  libcrypto3
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
