@@ -15,6 +15,7 @@ WORKDIR /var/www/html
 # Install packages and remove default server definition
 RUN apk add --no-cache \
   curl \
+  git \
   icu-data-full \
   nginx \
   nginx-mod-http-geoip \
