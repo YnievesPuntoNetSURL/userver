@@ -24,33 +24,33 @@ RUN apk add --no-cache \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
-  php81 \
-  php81-bcmath \
-  php81-ctype \
-  php81-curl \
-  php81-dom \
-  php81-exif \
-  php81-fpm \
-  php81-gd \
-  php81-iconv \
-  php81-intl \
-  php81-mbstring \
-  php81-mysqli \
-  php81-pdo_mysql \
-  php81-pdo_pgsql \
-  php81-opcache \
-  php81-openssl \
-  php81-pcntl \
-  php81-pecl-imagick \
-  php81-fileinfo \
-  php81-phar \
-  php81-session \
-  php81-simplexml \
-  php81-tokenizer \
-  php81-xml \
-  php81-xmlreader \
-  php81-xmlwriter \
-  php81-zip \
+  php82 \
+  php82-bcmath \
+  php82-ctype \
+  php82-curl \
+  php82-dom \
+  php82-exif \
+  php82-fpm \
+  php82-gd \
+  php82-iconv \
+  php82-intl \
+  php82-mbstring \
+  php82-mysqli \
+  php82-pdo_mysql \
+  php82-pdo_pgsql \
+  php82-opcache \
+  php82-openssl \
+  php82-pcntl \
+  php82-pecl-imagick \
+  php82-fileinfo \
+  php82-phar \
+  php82-session \
+  php82-simplexml \
+  php82-tokenizer \
+  php82-xml \
+  php82-xmlreader \
+  php82-xmlwriter \
+  php82-zip \
   supervisor \
   yarn \
   libssl3 \
@@ -65,8 +65,8 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
-COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
-COPY config/php.ini /etc/php81/conf.d/custom.ini
+COPY config/fpm-pool.conf /etc/php82/php-fpm.d/www.conf
+COPY config/php.ini /etc/php82/conf.d/custom.ini
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
