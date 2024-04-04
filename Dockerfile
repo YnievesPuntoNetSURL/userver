@@ -7,24 +7,38 @@ FROM alpine:${ALPINE_VERSION}
 # Labels
 LABEL maintainer="YnievesPuntoNet S.U.R.L. <ynieves@ynieves.net>"
 LABEL version="1.0.0"
-LABEL description="Alpine 3.18, PHP 8.1 FPM with Nginx 1.22, Composer, NodeJS, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache"
+LABEL description="Alpine 3.18, PHP 8.2 FPM with Nginx 1.20, Composer 2, NodeJS 18, NPM 10, Yarn 1.22, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache, and SMTP-Relay"
 
 # Setup document root
 WORKDIR /var/www/html
 
-# Install packages and remove default server definition
-RUN apk add --no-cache \
+# Load alpine cache
+RUN apk update && apk upgrade
+
+# Install system dependencies
+RUN apk add busybox-extras \
   curl \
+  icu-data \
+  g++ \
   icu-data-full \
-  nginx \
+  make \
+  supervisor
+
+# Install Nginx
+RUN apk add nginx \
   nginx-mod-http-geoip \
   nginx-mod-http-brotli \
   nginx-mod-http-image-filter \
   nginx-mod-http-xslt-filter \
-  nginx-mod-stream-geoip \
-  nodejs \
+  nginx-mod-stream-geoip
+
+# Install NodeJS
+RUN apk add nodejs \
   npm \
-  php82 \
+  yarn
+
+# Install PHP
+RUN apk add php82 \
   php82-bcmath \
   php82-ctype \
   php82-curl \
@@ -50,23 +64,33 @@ RUN apk add --no-cache \
   php82-xml \
   php82-xmlreader \
   php82-xmlwriter \
-  php82-zip \
-  supervisor \
-  yarn \
-  libssl3 \
+  php82-zip
+
+# Install cryptographic libraries
+RUN apk add libssl3 \
   libcrypto3
+
+# Remove apk cache
+RUN rm -rf /var/cache/apk/*
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Configure nginx - http
 COPY config/nginx.conf /etc/nginx/nginx.conf
-# Configure nginx - default server
 COPY config/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
 COPY config/fpm-pool.conf /etc/php82/php-fpm.d/www.conf
 COPY config/php.ini /etc/php82/conf.d/custom.ini
+
+# Install Haraka
+RUN npm install -g Haraka --unsafe
+RUN haraka -i /usr/local/haraka
+ADD ./config/haraka/host_list /usr/local/haraka/config/host_list
+ADD ./config/haraka/plugins /usr/local/haraka/config/plugins
+ADD ./config/haraka/relay_acl_allow /usr/local/haraka/config/relay_acl_allow
+RUN cd /usr/local/haraka && npm install
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
