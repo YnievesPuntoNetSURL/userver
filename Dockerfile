@@ -38,6 +38,7 @@ RUN apk add --no-cache \
   php82-mysqli \
   php82-pdo_mysql \
   php82-pdo_pgsql \
+  php82-posix \
   php82-opcache \
   php82-openssl \
   php82-pcntl \
