@@ -7,7 +7,7 @@ FROM alpine:${ALPINE_VERSION}
 # Labels
 LABEL maintainer="YnievesPuntoNet S.U.R.L. <ynieves@ynieves.net>"
 LABEL version="1.0.0"
-LABEL description="Alpine 3.18, PHP 8.1 FPM with Nginx 1.22, Composer, NodeJS, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache"
+LABEL description="Alpine 3.18, PHP 8.2 FPM with Nginx 1.24, Composer, NodeJS, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache"
 
 # Setup document root
 WORKDIR /var/www/html
@@ -65,6 +65,7 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
+RUN ln -s /usr/bin/php82 /usr/bin/php
 COPY config/fpm-pool.conf /etc/php82/php-fpm.d/www.conf
 COPY config/php.ini /etc/php82/conf.d/custom.ini
 
