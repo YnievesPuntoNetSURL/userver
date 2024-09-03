@@ -74,6 +74,9 @@ COPY config/php.ini /etc/php82/conf.d/custom.ini
 # Configure Postfix
 COPY config/postfix/main.cf /etc/postfix/main.cf
 COPY config/postfix/master.cf /etc/postfix/master.cf
+COPY config/startpostfix.sh /usr/sbin/startpostfix.sh
+
+RUN chmod +X /usr/sbin/startpostfix.sh
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
