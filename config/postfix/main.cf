@@ -1,0 +1,14 @@
+# main.cf
+myhostname = localhost
+mydomain = localdomain
+myorigin = $mydomain
+inet_interfaces = localhost
+mynetworks = 127.0.0.0/8
+relayhost = 
+smtpd_recipient_restrictions = permit_mynetworks, reject_unauth_destination
+smtpd_relay_restrictions = permit_mynetworks, permit
+inet_protocols = ipv4
+queue_directory = /var/spool/postfix
+data_directory = /var/lib/postfix
+mailbox_size_limit = 0
+message_size_limit = 10485760

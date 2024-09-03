@@ -24,6 +24,7 @@ RUN apk add --no-cache \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
+  postfix \
   php82 \
   php82-bcmath \
   php82-ctype \
@@ -70,6 +71,10 @@ RUN ln -s /usr/bin/php82 /usr/bin/php
 COPY config/fpm-pool.conf /etc/php82/php-fpm.d/www.conf
 COPY config/php.ini /etc/php82/conf.d/custom.ini
 
+# Configure Postfix
+COPY config/postfix/main.cf /etc/postfix/main.cf
+COPY config/postfix/master.cf /etc/postfix/master.cf
+
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
@@ -86,7 +91,7 @@ USER nobody
 COPY --chown=nobody src/ /var/www/html/
 
 # Expose the port nginx is reachable on
-EXPOSE 80
+EXPOSE 25 80
 
 # Let supervisord start nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
