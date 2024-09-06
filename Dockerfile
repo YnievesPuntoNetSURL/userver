@@ -76,7 +76,9 @@ COPY config/postfix/main.cf /etc/postfix/main.cf
 COPY config/postfix/master.cf /etc/postfix/master.cf
 COPY config/startpostfix.sh /usr/sbin/startpostfix.sh
 
-RUN chmod +X /usr/sbin/startpostfix.sh
+RUN chmod +x /usr/sbin/startpostfix.sh
+RUN mkdir -p /var/spool/postfix/etc
+RUN postconf compatibility_level=3.6
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
