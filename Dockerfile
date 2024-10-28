@@ -33,13 +33,13 @@ RUN apk add --no-cache \
   php82-curl \
   php82-dom \
   php82-exif \
+  php82-fileinfo \
   php82-fpm \
   php82-gd \
   php82-iconv \
   php82-intl \
   php82-mbstring \
   php82-mysqli \
-  php82-posix \
   php82-opcache \
   php82-openssl \
   php82-pcntl \
@@ -47,8 +47,8 @@ RUN apk add --no-cache \
   php82-pdo_pgsql \
   php82-pdo_sqlite \
   php82-pecl-imagick \
-  php82-fileinfo \
   php82-phar \
+  php82-posix \
   php82-session \
   php82-simplexml \
   php82-sodium \
