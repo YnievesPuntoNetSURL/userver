@@ -16,6 +16,7 @@ WORKDIR /var/www/html
 RUN apk add --no-cache \
   curl \
   icu-data-full \
+  git \
   nginx \
   nginx-mod-http-geoip \
   nginx-mod-http-brotli \
@@ -24,6 +25,7 @@ RUN apk add --no-cache \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
+  mysql-client \
   postfix \
   php82 \
   php82-bcmath \
@@ -37,23 +39,27 @@ RUN apk add --no-cache \
   php82-intl \
   php82-mbstring \
   php82-mysqli \
-  php82-pdo_mysql \
-  php82-pdo_pgsql \
   php82-posix \
   php82-opcache \
   php82-openssl \
   php82-pcntl \
+  php82-pdo_mysql \
+  php82-pdo_pgsql \
+  php82-pdo_sqlite \
   php82-pecl-imagick \
   php82-fileinfo \
   php82-phar \
   php82-session \
   php82-simplexml \
+  php82-sodium \
+  php82-sqlite3 \
   php82-tokenizer \
   php82-xml \
   php82-xmlreader \
   php82-xmlwriter \
   php82-zip \
   supervisor \
+  tzdata \
   yarn \
   libssl3 \
   libcrypto3
