@@ -1,15 +1,21 @@
 name: userver
 
 services:
-
   app:
     image: ${IMAGE_NAME}:${IMAGE_TAG}
     build: .
-    
+    healthcheck:
+      test: ["CMD", "curl", "--silent", "--fail", "http://127.0.0.1/fpm-ping"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
   sut:
     image: alpine:3.18
     depends_on:
-      - app
+      app:
+        condition: service_healthy
     command: /tmp/run_tests.sh
     volumes:
       - "./run_tests.sh:/tmp/run_tests.sh:ro"
