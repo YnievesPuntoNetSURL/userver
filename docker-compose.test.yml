@@ -2,7 +2,7 @@ name: userver
 
 services:
   app:
-    image: ${IMAGE_NAME}:${IMAGE_TAG}-php${ matrix.php_version }
+    image: ${IMAGE_NAME}:${IMAGE_TAG}
     build: .
     healthcheck:
       test: ["CMD", "curl", "--silent", "--fail", "http://127.0.0.1/fpm-ping"]
