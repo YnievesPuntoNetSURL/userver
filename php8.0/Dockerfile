@@ -93,7 +93,7 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN mkdir -p /var/cache/nginx /.composer /.npm
 
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm
+RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/php8 /var/log/nginx /var/cache/nginx /.composer /.npm
 
 # Switch to use a non-root user from here on
 USER nobody
