@@ -74,6 +74,7 @@ COPY config/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
 RUN ln -s /usr/bin/php82 /usr/bin/php
+RUN ln -s /usr/sbin/php-fpm82 /usr/sbin/php-fpm
 COPY config/fpm-pool.conf /etc/php82/php-fpm.d/www.conf
 COPY config/php.ini /etc/php82/conf.d/custom.ini
 
