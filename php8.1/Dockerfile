@@ -95,9 +95,6 @@ RUN mkdir -p /var/cache/nginx /.composer /.npm
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
 RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm
 
-# Switch to use a non-root user from here on
-USER nobody
-
 # Add application
 COPY --chown=nobody src/ /var/www/html/
 
