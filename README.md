@@ -1,22 +1,18 @@
-# YnievesPuntoNet µServer (PHP-FPM 8.1, Nginx 1.24 on Alpine Linux 3.18)
+# YnievesPuntoNet µServer (PHP-FPM, Nginx, Node,... and more on Alpine Linux)
 
 [![Docker Pulls](https://img.shields.io/docker/pulls/ynievesdotnet/userver.svg)](https://hub.docker.com/r/ynievesdotnet/userver/)
 [![Docker Stars](https://img.shields.io/docker/stars/ynievesdotnet/userver.svg)](https://hub.docker.com/r/ynievesdotnet/userver/)
 [![Docker Automated build](https://img.shields.io/docker/automated/ynievesdotnet/userver.svg)](https://hub.docker.com/r/ynievesdotnet/userver/)
-
 ![µServer 1.0.0](https://img.shields.io/badge/µServer-1.0.0-brightgreen.svg)
-![alpine 3.18](https://img.shields.io/badge/alpine-3.18-brightgreen.svg)
-![nginx 1.24](https://img.shields.io/badge/nginx-1.24-brightgreen.svg)
-![php 8.1](https://img.shields.io/badge/php-8.1-brightgreen.svg)
 ![License MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
-µServer PHP-FPM 8.1 & Nginx 1.24 container image for Docker, built on [Alpine Linux](https://www.alpinelinux.org/).
+µServer PHP-FPM & Nginx container image for Docker, built on [Alpine Linux](https://www.alpinelinux.org/).
 
 Repository: <https://github.com/ynievespuntonetsurl/userver>
 
 * Built on the lightweight and secure Alpine Linux distribution.
 * Multi-platform support, including AMD4, ARMv6, ARMv7, and ARM64.
-* Powered by PHP 8.1 for enhanced performance, lower CPU usage, and reduced memory footprint.
+* Powered for enhanced performance, lower CPU usage, and reduced memory footprint.
 * Optimized to handle up to 500 concurrent users, ensuring high scalability.
 * Utilizes PHP-FPM's `on-demand` process manager, dynamically allocating resources only when traffic is present.
 * Nginx server with built-in support for Brotli compression and other advanced features.
@@ -26,7 +22,7 @@ Repository: <https://github.com/ynievespuntonetsurl/userver>
 
 ## Goal of this project
 
-This app server container image is optimized for production environments. It has been fine-tuned and configured to deliver optimal performance and reliability, making it well-suited for running your applications in a production setting. The image incorporates various optimizations and best practices to ensure efficient resource usage, reduced CPU usage, and minimal memory footprint. By utilizing PHP 8.1, it takes advantage of the latest improvements in PHP's performance. The inclusion of Nginx with Brotli compression support further enhances the server's capabilities. Additionally, the image follows the principle of keeping things simple (KISS) to facilitate easy customization and adaptation to meet the specific needs of your production environment. It is an ideal choice for deploying your applications in production, whether in a Kubernetes or alternative environment (such as k8s, k3s, etc.).
+This app server container image is optimized for production environments. It has been fine-tuned and configured to deliver optimal performance and reliability, making it well-suited for running your applications in a production setting. The image incorporates various optimizations and best practices to ensure efficient resource usage, reduced CPU usage, and minimal memory footprint. By utilizing PHP, it takes advantage of the latest improvements in PHP's performance. The inclusion of Nginx with Brotli compression support further enhances the server's capabilities. Additionally, the image follows the principle of keeping things simple (KISS) to facilitate easy customization and adaptation to meet the specific needs of your production environment. It is an ideal choice for deploying your applications in production, whether in a Kubernetes or alternative environment (such as k8s, k3s, etc.).
 
 ## Usage
 
@@ -39,6 +35,18 @@ See the PHP info on <http://localhost:8000>, or the static html page on <http://
 Or mount your own code to be served by PHP-FPM & Nginx
 
     docker run -p 8000:80 -v ~/php_app_code:/var/www/html ynievesdotnet/userver:latest
+
+## Tags
+
+| Tags          | Alpine Linux | PHP | Node  | Nginx |
+|:--------------|:------------:|:---:|:-----:|:-----:|
+|php8.3(latest) |     3.20     | 8.3 | 20.15 | 1.26  |
+|php8.2         |     3.20     | 8.2 | 20.15 | 1.26  |
+|php8.1(d)      |     3.19     | 8.1 | 20.15 | 1.24  |
+|php8.0(d)      |     3.16     | 8.0 | 16.20 | 1.22  |
+|php7.4(d)      |     3.15     | 7.4 | 16.20 | 1.20  |
+
+(d) -> Deprecated, not recomendable for production
 
 ## Configuration
 
@@ -61,7 +69,7 @@ PHP-FPM configuration:
 
 You can use this image with Docker Composer, just create a `docker-compose.yml` file like this:
 
-    version: '3.1'
+    name: 'Name APP'
 
     services:
         name_app:
