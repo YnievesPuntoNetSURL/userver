@@ -73,7 +73,7 @@ COPY config/nginx.conf /etc/nginx/nginx.conf
 COPY config/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
-#RUN ln -s /usr/bin/php81 /usr/bin/php
+RUN ln -s /usr/sbin/php-fpm8 /usr/sbin/php-fpm
 COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
 COPY config/php.ini /etc/php81/conf.d/custom.ini
 
