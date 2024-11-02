@@ -62,7 +62,7 @@ jobs:
       - name: Run Grype vulnerability scan
         env:
           IMAGE_NAME: "${{ env.IMAGE_NAME }}"
-          IMAGE_TAG: "${{ env.IMAGE_TAG }}"
+          IMAGE_TAG: "${{ env.IMAGE_TAG }}-php${{ matrix.php_version }}"
         run: |
           grype $IMAGE_NAME:$IMAGE_TAG -o sarif > grype-results.sarif
 
@@ -81,25 +81,14 @@ jobs:
       - name: Build multi-arch image and push latest tag
         if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
         run: |-
-          docker buildx build \
-            --cache-from=$IMAGE_NAME:latest \
-            --push \
-            -f php8.2/Dockerfile \
-            -t $IMAGE_NAME:latest \
-            --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 \
-            .
+          TAGS="-t $IMAGE_NAME:php${{ matrix.php_version }}"
+          if [ "${{ matrix.tag_as_latest }}" = "true" ]; then
+            TAGS="$TAGS -t $IMAGE_NAME:latest"
+          fi
 
-      - name: Set tag in environment
-        if: contains(github.ref, 'refs/tags/')
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-
-      - name: Build multi-arch image and push release tag
-        if: contains(github.ref, 'refs/tags/')
-        run: |-
           docker buildx build \
-            --cache-from=$IMAGE_NAME:latest \
             --push \
-            -f php8.2/Dockerfile \
-            -t $IMAGE_NAME:$RELEASE_VERSION \
+            -f php${{ matrix.php_version }}/Dockerfile \
+            $TAGS \
             --platform linux/amd64,linux/arm64,linux/arm/v7,linux/arm/v6 \
             .
