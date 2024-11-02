@@ -44,12 +44,15 @@ jobs:
           fi
 
       - name: Smoke test image
+        env:
+          IMAGE_NAME: ${{ env.IMAGE_NAME }}
+          IMAGE_TAG: "${{ env.IMAGE_TAG }}-php${{ matrix.php_version }}"
         run: |
-          DOCKER_TAG=${{ matrix.php_version }}
-          docker compose -f docker-compose.test.yml up -d app
+          sed "s|\${IMAGE_NAME}|$IMAGE_NAME|g; s|\${IMAGE_TAG}|$IMAGE_TAG|g" docker-compose.test.yml > docker-compose.generated.yml
+          docker compose -f docker-compose.generated.yml up -d app
           sleep 2
-          docker compose -f docker-compose.test.yml logs app || true
-          docker compose -f docker-compose.test.yml run sut
+          docker compose -f docker-compose.generated.yml logs app || true
+          docker compose -f docker-compose.generated.yml run sut
 
       - name: Setup Grype
         run: |
