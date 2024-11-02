@@ -39,19 +39,22 @@ jobs:
           docker compose -f docker-compose.test.yml logs app || true
           docker compose -f docker-compose.test.yml run sut
 
-      - name: Run Trivy vulnerability scanner
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: "${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}"
-          format: "template"
-          template: "@/contrib/sarif.tpl"
-          output: "trivy-results.sarif"
+      - name: Setup Grype
+        run: |
+          curl -sSfL https://raw.githubusercontent.com/anchore/grype/main/install.sh | sh -s -- -b $HOME/.local/bin
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
 
-      - name: Upload Trivy scan results to GitHub Security tab
-        if: github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule')
+      - name: Run Grype vulnerability scan
+        env:
+          IMAGE_NAME: "${{ env.IMAGE_NAME }}"
+          IMAGE_TAG: "${{ env.IMAGE_TAG }}"
+        run: |
+          grype $IMAGE_NAME:$IMAGE_TAG -o sarif > grype-results.sarif
+
+      - name: Upload Grype scan results to GitHub Security tab
         uses: github/codeql-action/upload-sarif@v2
         with:
-          sarif_file: "trivy-results.sarif"
+          sarif_file: grype-results.sarif
 
       - name: Login to Docker Hub
         if: (github.ref == 'refs/heads/main' && (github.event_name == 'push' || github.event_name == 'schedule' )) || contains(github.ref, 'refs/tags/')
