@@ -1,0 +1,10 @@
+{
+    "name": "ynievesdotnet/userver",
+    "description": "Docker Image for publish php apps",
+    "type": "project",
+    "license": "MIT",
+    "minimum-stability": "stable",
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}

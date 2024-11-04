@@ -15,6 +15,9 @@ WORKDIR /var/www/html
 # Install packages and remove default server definition
 RUN apk add --no-cache \
   curl \
+  exim \
+  icu-data \
+  git \
   nginx \
   nginx-mod-http-geoip \
   nginx-mod-http-brotli \
@@ -23,12 +26,14 @@ RUN apk add --no-cache \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
+  mysql-client \
   php7 \
   php7-bcmath \
   php7-ctype \
   php7-curl \
   php7-dom \
   php7-exif \
+  php7-fileinfo \
   php7-fpm \
   php7-gd \
   php7-iconv \
@@ -36,22 +41,26 @@ RUN apk add --no-cache \
   php7-json \
   php7-mbstring \
   php7-mysqli \
-  php7-pdo_mysql \
-  php7-pdo_pgsql \
   php7-opcache \
   php7-openssl \
   php7-pcntl \
+  php7-pdo_mysql \
+  php7-pdo_pgsql \
+  php7-pdo_sqlite \
   php7-pecl-imagick \
-  php7-fileinfo \
   php7-phar \
+  php7-posix \
   php7-session \
   php7-simplexml \
+  php7-sodium \
+  php7-sqlite3 \
   php7-tokenizer \
   php7-xml \
   php7-xmlreader \
   php7-xmlwriter \
   php7-zip \
   supervisor \
+  tzdata \
   yarn \
   libssl3 \
   libcrypto3
@@ -60,22 +69,29 @@ RUN apk add --no-cache \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Configure nginx - http
-COPY config/nginx.conf /etc/nginx/nginx.conf
+COPY config/nginx/nginx.conf /etc/nginx/nginx.conf
 # Configure nginx - default server
-COPY config/conf.d /etc/nginx/conf.d/
+COPY config/nginx/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
-COPY config/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
-COPY config/php.ini /etc/php7/conf.d/custom.ini
+RUN ln -s /usr/sbin/php-fpm7 /usr/sbin/php-fpm
+COPY config/php/fpm-pool.conf /etc/php7/php-fpm.d/www.conf
+COPY config/php/php.ini /etc/php7/conf.d/custom.ini
+
+# Configure Exim
+COPY config/exim/exim.conf /etc/exim/exim.conf
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Create somw cache directory
-RUN mkdir -p /var/cache/nginx /.composer /.npm
+# Create some cache directory
+RUN mkdir -p /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim
 
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm
+RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim
+
+# Switch to use a non-root user from here on
+USER nobody
 
 # Add application
 COPY --chown=nobody src/ /var/www/html/

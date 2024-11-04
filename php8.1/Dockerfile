@@ -15,6 +15,7 @@ WORKDIR /var/www/html
 # Install packages and remove default server definition
 RUN apk add --no-cache \
   curl \
+  exim \
   icu-data-full \
   git \
   nginx \
@@ -26,7 +27,6 @@ RUN apk add --no-cache \
   nodejs \
   npm \
   mysql-client \
-  postfix \
   php81 \
   php81-bcmath \
   php81-ctype \
@@ -68,32 +68,30 @@ RUN apk add --no-cache \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Configure nginx - http
-COPY config/nginx.conf /etc/nginx/nginx.conf
+COPY config/nginx/nginx.conf /etc/nginx/nginx.conf
 # Configure nginx - default server
-COPY config/conf.d /etc/nginx/conf.d/
+COPY config/nginx/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
+RUN ln -s /usr/bin/php81 /usr/bin/php
 RUN ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm
-COPY config/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
-COPY config/php.ini /etc/php81/conf.d/custom.ini
+COPY config/php/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
+COPY config/php/php.ini /etc/php81/conf.d/custom.ini
 
-# Configure Postfix
-COPY config/postfix/main.cf /etc/postfix/main.cf
-COPY config/postfix/master.cf /etc/postfix/master.cf
-COPY config/startpostfix.sh /usr/sbin/startpostfix.sh
-
-RUN chmod +x /usr/sbin/startpostfix.sh
-RUN mkdir -p /var/spool/postfix/etc
-RUN postconf compatibility_level=3.6
+# Configure Exim
+COPY config/exim/exim.conf /etc/exim/exim.conf
 
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Create somw cache directory
-RUN mkdir -p /var/cache/nginx /.composer /.npm
+# Create some cache directory
+RUN mkdir -p /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim
 
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm
+RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim
+
+# Switch to use a non-root user from here on
+USER nobody
 
 # Add application
 COPY --chown=nobody src/ /var/www/html/
