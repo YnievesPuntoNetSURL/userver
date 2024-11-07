@@ -52,6 +52,7 @@ RUN apk add --no-cache \
   php82-session \
   php82-simplexml \
   php82-sodium \
+  php82-sockets \
   php82-sqlite3 \
   php82-tokenizer \
   php82-xml \

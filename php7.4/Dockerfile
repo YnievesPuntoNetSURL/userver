@@ -53,6 +53,7 @@ RUN apk add --no-cache \
   php7-session \
   php7-simplexml \
   php7-sodium \
+  php7-sockets \
   php7-sqlite3 \
   php7-tokenizer \
   php7-xml \

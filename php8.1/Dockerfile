@@ -52,6 +52,7 @@ RUN apk add --no-cache \
   php81-session \
   php81-simplexml \
   php81-sodium \
+  php81-sockets \
   php81-sqlite3 \
   php81-tokenizer \
   php81-xml \
