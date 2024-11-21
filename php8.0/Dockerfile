@@ -88,17 +88,18 @@ COPY config/exim/exim.conf /etc/exim/exim.conf
 # Configure supervisord
 COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-# Create some cache directory
-RUN mkdir -p /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim
+# Add app user for run apps
+RUN addgroup -g 1000 app && \
+    adduser -u 1000 -G app -h /home/app -s /bin/sh -D app
 
-# Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim
+# Make sure files/folders needed by the processes are accessable when they run under the app user
+RUN chown -R app:app /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim
 
 # Switch to use a non-root user from here on
-USER nobody
+USER app
 
 # Add application
-COPY --chown=nobody src/ /var/www/html/
+COPY --chown=app src/ /var/www/html/
 
 # Expose the port nginx is reachable on
 EXPOSE 80
