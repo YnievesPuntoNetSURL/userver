@@ -93,6 +93,9 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN addgroup -g 1000 app && \
     adduser -u 1000 -G app -h /home/app -s /bin/sh -D app
 
+# Create some new directories
+RUN mkdir /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim
+
 # Make sure files/folders needed by the processes are accessable when they run under the app user
 RUN chown -R app:app /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim
 
