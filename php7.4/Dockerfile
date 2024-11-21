@@ -14,6 +14,7 @@ WORKDIR /var/www/html
 
 # Install packages and remove default server definition
 RUN apk add --no-cache \
+  busybox-suid \
   curl \
   exim \
   icu-data \
@@ -29,11 +30,13 @@ RUN apk add --no-cache \
   mysql-client \
   php7 \
   php7-bcmath \
+  php7-calendar \
   php7-ctype \
   php7-curl \
   php7-dom \
   php7-exif \
   php7-fileinfo \
+  php7-ftp \
   php7-fpm \
   php7-gd \
   php7-iconv \
@@ -52,6 +55,7 @@ RUN apk add --no-cache \
   php7-posix \
   php7-session \
   php7-simplexml \
+  php7-soap \
   php7-sodium \
   php7-sockets \
   php7-sqlite3 \
@@ -88,8 +92,11 @@ COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 # Create some cache directory
 RUN mkdir -p /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim
 
+# Create some data files
+RUN touch /.yarnrc
+
 # Make sure files/folders needed by the processes are accessable when they run under the nobody user
-RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim
+RUN chown -R nobody.nobody /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /.composer /.npm /.cache/yarn /.config /.yarn /var/log/exim /.yarnrc
 
 # Switch to use a non-root user from here on
 USER nobody

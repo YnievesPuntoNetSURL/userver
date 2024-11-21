@@ -14,6 +14,7 @@ WORKDIR /var/www/html
 
 # Install packages and remove default server definition
 RUN apk add --no-cache \
+  busybox-suid \
   curl \
   exim \
   icu-data-full \
@@ -29,11 +30,13 @@ RUN apk add --no-cache \
   mysql-client \
   php81 \
   php81-bcmath \
+  php81-calendar \
   php81-ctype \
   php81-curl \
   php81-dom \
   php81-exif \
   php81-fileinfo \
+  php81-ftp \
   php81-fpm \
   php81-gd \
   php81-iconv \
@@ -51,6 +54,7 @@ RUN apk add --no-cache \
   php81-posix \
   php81-session \
   php81-simplexml \
+  php81-soap \
   php81-sodium \
   php81-sockets \
   php81-sqlite3 \
