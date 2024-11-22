@@ -100,7 +100,7 @@ RUN echo app >> /etc/cron.allow
 RUN mkdir -p /var/www/html /run /var/log/php-fpm /var/lib/nginx/logs /var/log/nginx /var/cache/nginx /var/log/exim /var/log/supervisor
 
 # Make sure files/folders needed by the processes are accessable when they run under the app user
-RUN chown -R app:app /var/www/html /var/log/php-fpm /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim /var/log/php83 /var/log/supervisor
+RUN chown -R app:app /var/www/html /var/log/php-fpm /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim /var/log/php8 /var/log/supervisor
 
 # Let supervisord start exim, nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
