@@ -74,6 +74,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Configure nginx - http
 COPY config/nginx/nginx.conf /etc/nginx/nginx.conf
+
 # Configure nginx - default server
 COPY config/nginx/conf.d /etc/nginx/conf.d/
 
@@ -86,29 +87,29 @@ COPY config/php/php.ini /etc/php8/conf.d/custom.ini
 COPY config/exim/exim.conf /etc/exim/exim.conf
 
 # Configure supervisord
-COPY config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY config/supervisord.conf /etc/supervisord.conf
 
 # Add app user for run apps
 RUN addgroup -g 1000 app && \
   adduser -u 1000 -G app -h /home/app -s /bin/sh -D app
 
+# Allow app user to run crontabs
+RUN echo app >> /etc/cron.allow
+
 # Create some new directories
-RUN mkdir -p /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim
+RUN mkdir -p /var/www/html /run /var/log/php-fpm /var/lib/nginx/logs /var/log/nginx /var/cache/nginx /var/log/exim /var/log/supervisor
 
 # Make sure files/folders needed by the processes are accessable when they run under the app user
-RUN chown -R app:app /var/www/html /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim
+RUN chown -R app:app /var/www/html /var/log/php-fpm /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim /var/log/php83 /var/log/supervisor
 
-# Switch to use a non-root user from here on
-USER app
+# Let supervisord start exim, nginx & php-fpm
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
 
 # Add application
 COPY --chown=app src/ /var/www/html/
 
 # Expose the port nginx is reachable on
 EXPOSE 80
-
-# Let supervisord start nginx & php-fpm
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 # Configure a healthcheck to validate that everything is up&running
 HEALTHCHECK --timeout=10s CMD curl --silent --fail http://127.0.0.1/fpm-ping
