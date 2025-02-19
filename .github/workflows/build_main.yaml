@@ -20,7 +20,7 @@ jobs:
       matrix:
         php_version: ["8.4", "8.3", "8.2", "8.1", "8.0", "7.4"]
         include:
-          - php_version: "8.3"
+          - php_version: "8.4"
             tag_as_latest: true
 
     steps:
