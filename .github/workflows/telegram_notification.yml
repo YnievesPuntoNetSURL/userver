@@ -1,9 +1,10 @@
 name: Pull Notification
 
 on:
-  push:
-    branches:
-      - main
+  workflow_run:
+    workflows: ["Test & build Docker images"]
+    types: [completed]
+    branches: '**'
 
 jobs:
   send:
@@ -11,11 +12,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Send message
-        uses: yamaks2306/telegram-notification@main
-        if: always()
+      - name: Send Telegram notification
+        uses: appleboy/telegram-action@master
         with:
-          chat_id: ${{ secrets.TG_CHAT_ID }}
+          to: ${{ secrets.TG_CHAT_ID }}
           token: ${{ secrets.TG_TOKEN }}
+          message: |
+            ✅ *Workflow "${{ github.event.workflow_run.name }}" Finalizado*
+            ▫️ *Estado:* ${{ github.event.workflow_run.conclusion }}
+            ▫️ *Rama:* ${{ github.event.workflow_run.head_branch }}
+            ▫️ *Detalles:* [${{ github.event.workflow_run.id }}](${{ github.event.workflow_run.html_url }})
+          format: markdown
