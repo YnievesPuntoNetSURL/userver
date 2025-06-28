@@ -1,5 +1,5 @@
 # µServer, for deploy php applications for YnievesPuntoNet SURL
-ARG ALPINE_VERSION=3.21
+ARG ALPINE_VERSION=3.22
 
 # Base Image
 FROM alpine:${ALPINE_VERSION}
@@ -7,7 +7,7 @@ FROM alpine:${ALPINE_VERSION}
 # Labels
 LABEL maintainer="YnievesPuntoNet S.U.R.L. <ynieves@ynieves.net>"
 LABEL version="1.0.0"
-LABEL description="Alpine 3.21, PHP 8.2 FPM with Nginx 1.26, Composer, NodeJS 20.15, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache"
+LABEL description="Alpine 3.22, PHP 8.2 FPM with Nginx 1.26, Composer, NodeJS 20.15, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache"
 
 # Setup document root
 WORKDIR /var/www/html
