@@ -17,17 +17,19 @@ RUN apk add --no-cache \
   busybox-suid \
   curl \
   exim \
-  icu-data-full \
   git \
+  icu-data-full \
+  libcrypto3 \
+  libssl3 \
+  mysql-client \
   nginx \
-  nginx-mod-http-geoip \
   nginx-mod-http-brotli \
+  nginx-mod-http-geoip \
   nginx-mod-http-image-filter \
   nginx-mod-http-xslt-filter \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
-  mysql-client \
   php82 \
   php82-bcmath \
   php82-calendar \
@@ -36,8 +38,8 @@ RUN apk add --no-cache \
   php82-dom \
   php82-exif \
   php82-fileinfo \
-  php82-ftp \
   php82-fpm \
+  php82-ftp \
   php82-gd \
   php82-iconv \
   php82-intl \
@@ -55,8 +57,8 @@ RUN apk add --no-cache \
   php82-session \
   php82-simplexml \
   php82-soap \
-  php82-sodium \
   php82-sockets \
+  php82-sodium \
   php82-sqlite3 \
   php82-tokenizer \
   php82-xml \
@@ -65,9 +67,7 @@ RUN apk add --no-cache \
   php82-zip \
   supervisor \
   tzdata \
-  yarn \
-  libssl3 \
-  libcrypto3
+  yarn
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
