@@ -7,7 +7,7 @@ FROM alpine:${ALPINE_VERSION}
 # Labels
 LABEL maintainer="YnievesPuntoNet S.U.R.L. <ynieves@ynieves.net>"
 LABEL version="1.0.0"
-LABEL description="Alpine 3.23, PHP 8.5 FPM with Nginx 1.28, Composer, NodeJS 24, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL, OpCache"
+LABEL description="Alpine 3.23, PHP 8.5 FPM with Nginx 1.28, Composer, NodeJS 24, Yarn, GD, Imagick, Intl, Zip, PCNTL, Bcmath, Exif, PDO MySQL and PgSQL"
 
 # Setup document root
 WORKDIR /var/www/html
@@ -45,7 +45,6 @@ RUN apk add --no-cache \
   php85-intl \
   php85-mbstring \
   php85-mysqli \
-  php85-opcache \
   php85-openssl \
   php85-pcntl \
   php85-pdo_mysql \
