@@ -17,17 +17,19 @@ RUN apk add --no-cache \
   busybox-suid \
   curl \
   exim \
-  icu-data \
   git \
+  icu-data \
+  libcrypto3 \
+  libssl3 \
+  mysql-client \
   nginx \
-  nginx-mod-http-geoip \
   nginx-mod-http-brotli \
+  nginx-mod-http-geoip \
   nginx-mod-http-image-filter \
   nginx-mod-http-xslt-filter \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
-  mysql-client \
   php7 \
   php7-bcmath \
   php7-calendar \
@@ -36,8 +38,8 @@ RUN apk add --no-cache \
   php7-dom \
   php7-exif \
   php7-fileinfo \
-  php7-ftp \
   php7-fpm \
+  php7-ftp \
   php7-gd \
   php7-iconv \
   php7-intl \
@@ -56,8 +58,8 @@ RUN apk add --no-cache \
   php7-session \
   php7-simplexml \
   php7-soap \
-  php7-sodium \
   php7-sockets \
+  php7-sodium \
   php7-sqlite3 \
   php7-tokenizer \
   php7-xml \
@@ -66,9 +68,7 @@ RUN apk add --no-cache \
   php7-zip \
   supervisor \
   tzdata \
-  yarn \
-  libssl3 \
-  libcrypto3
+  yarn
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -92,16 +92,17 @@ COPY config/supervisord.conf /etc/supervisord.conf
 
 # Add app user for run apps
 RUN addgroup -g 1000 app && \
-  adduser -u 1000 -G app -h /home/app -s /bin/sh -D app
-
+    adduser -u 1000 -G app -h /home/app -s /bin/sh -D app && \
 # Allow app user to run crontabs
-RUN echo app >> /etc/cron.allow
-
+    echo app >> /etc/cron.allow && \
 # Create some new directories
-RUN mkdir -p /var/www/html /run /var/log/php-fpm /var/lib/nginx/logs /var/log/nginx /var/cache/nginx /var/log/exim /var/log/supervisor
-
+    mkdir -p /var/www/html /run /var/log/php-fpm \
+    /var/lib/nginx/logs /var/log/nginx /var/cache/nginx \
+    /var/log/exim /var/log/supervisor && \
 # Make sure files/folders needed by the processes are accessable when they run under the app user
-RUN chown -R app:app /var/www/html /var/log/php-fpm /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim /var/log/php7 /var/log/supervisor
+    chown -R app:app /var/www/html /var/log/php-fpm \
+    /run /var/lib/nginx /var/log/nginx /var/cache/nginx \
+    /var/log/exim /var/log/php7 /var/log/supervisor
 
 # Let supervisord start exim, nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]

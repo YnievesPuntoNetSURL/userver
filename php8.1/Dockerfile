@@ -17,17 +17,19 @@ RUN apk add --no-cache \
   busybox-suid \
   curl \
   exim \
-  icu-data-full \
   git \
+  icu-data-full \
+  libcrypto3 \
+  libssl3 \
+  mysql-client \
   nginx \
-  nginx-mod-http-geoip \
   nginx-mod-http-brotli \
+  nginx-mod-http-geoip \
   nginx-mod-http-image-filter \
   nginx-mod-http-xslt-filter \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
-  mysql-client \
   php81 \
   php81-bcmath \
   php81-calendar \
@@ -36,8 +38,8 @@ RUN apk add --no-cache \
   php81-dom \
   php81-exif \
   php81-fileinfo \
-  php81-ftp \
   php81-fpm \
+  php81-ftp \
   php81-gd \
   php81-iconv \
   php81-intl \
@@ -55,8 +57,8 @@ RUN apk add --no-cache \
   php81-session \
   php81-simplexml \
   php81-soap \
-  php81-sodium \
   php81-sockets \
+  php81-sodium \
   php81-sqlite3 \
   php81-tokenizer \
   php81-xml \
@@ -65,9 +67,7 @@ RUN apk add --no-cache \
   php81-zip \
   supervisor \
   tzdata \
-  yarn \
-  libssl3 \
-  libcrypto3
+  yarn
 
 # Install Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -79,9 +79,9 @@ COPY config/nginx/nginx.conf /etc/nginx/nginx.conf
 COPY config/nginx/conf.d /etc/nginx/conf.d/
 
 # Configure PHP-FPM
-RUN ln -s /usr/bin/php81 /usr/bin/php
-RUN ln -s /usr/bin/phar81 /usr/bin/phar
-RUN ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm
+RUN ln -s /usr/bin/php81 /usr/bin/php && \
+    ln -s /usr/bin/phar81 /usr/bin/phar && \
+    ln -s /usr/sbin/php-fpm81 /usr/sbin/php-fpm
 COPY config/php/fpm-pool.conf /etc/php81/php-fpm.d/www.conf
 COPY config/php/php.ini /etc/php81/conf.d/custom.ini
 
@@ -93,16 +93,17 @@ COPY config/supervisord.conf /etc/supervisord.conf
 
 # Add app user for run apps
 RUN addgroup -g 1000 app && \
-  adduser -u 1000 -G app -h /home/app -s /bin/sh -D app
-
+    adduser -u 1000 -G app -h /home/app -s /bin/sh -D app && \
 # Allow app user to run crontabs
-RUN echo app >> /etc/cron.allow
-
+    echo app >> /etc/cron.allow && \
 # Create some new directories
-RUN mkdir -p /var/www/html /run /var/log/php-fpm /var/lib/nginx/logs /var/log/nginx /var/cache/nginx /var/log/exim /var/log/supervisor
-
+    mkdir -p /var/www/html /run /var/log/php-fpm \
+    /var/lib/nginx/logs /var/log/nginx /var/cache/nginx \
+    /var/log/exim /var/log/supervisor && \
 # Make sure files/folders needed by the processes are accessable when they run under the app user
-RUN chown -R app:app /var/www/html /var/log/php-fpm /run /var/lib/nginx /var/log/nginx /var/cache/nginx /var/log/exim /var/log/php81 /var/log/supervisor
+    chown -R app:app /var/www/html /var/log/php-fpm \
+    /run /var/lib/nginx /var/log/nginx /var/cache/nginx \
+    /var/log/exim /var/log/php81 /var/log/supervisor
 
 # Let supervisord start exim, nginx & php-fpm
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisord.conf"]
