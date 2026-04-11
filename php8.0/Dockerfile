@@ -14,6 +14,7 @@ WORKDIR /var/www/html
 
 # Install packages and remove default server definition
 RUN apk add --no-cache \
+  bash \
   busybox-suid \
   curl \
   exim \
@@ -30,6 +31,7 @@ RUN apk add --no-cache \
   nginx-mod-stream-geoip \
   nodejs \
   npm \
+  openssl \
   php8 \
   php8-bcmath \
   php8-calendar \
@@ -47,6 +49,7 @@ RUN apk add --no-cache \
   php8-mysqli \
   php8-opcache \
   php8-openssl \
+  php8-pecl-grpc \
   php8-pcntl \
   php8-pdo_mysql \
   php8-pdo_pgsql \
