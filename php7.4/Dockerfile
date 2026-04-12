@@ -50,7 +50,6 @@ RUN apk add --no-cache \
   php7-mysqli \
   php7-opcache \
   php7-openssl \
-  php7-pecl-grpc \
   php7-pcntl \
   php7-pdo_mysql \
   php7-pdo_pgsql \

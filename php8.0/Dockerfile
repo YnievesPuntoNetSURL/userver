@@ -49,7 +49,6 @@ RUN apk add --no-cache \
   php8-mysqli \
   php8-opcache \
   php8-openssl \
-  php8-pecl-grpc \
   php8-pcntl \
   php8-pdo_mysql \
   php8-pdo_pgsql \
