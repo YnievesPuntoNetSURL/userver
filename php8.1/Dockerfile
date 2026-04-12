@@ -92,7 +92,9 @@ COPY config/php/php.ini /etc/php81/conf.d/custom.ini
 COPY config/exim/exim.conf /etc/exim/exim.conf
 
 # Configure supervisord
+RUN mkdir -p /etc/supervisord.d /etc/supervisord.custom.d
 COPY config/supervisord.conf /etc/supervisord.conf
+COPY config/supervisord.d/ /etc/supervisord.d/
 
 # Add app user for run apps
 RUN addgroup -g 1000 app && \
