@@ -9,31 +9,47 @@ $success = null;
 $error = null;
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $sender = $_POST['sender'];
-    $recipient = $_POST['recipient'];
-    $subject = $_POST['subject'];
-    $body = $_POST['body'];
-
-    $mail = new PHPMailer(true);
-
-    try {
-        $mail->isSMTP();
-        $mail->Host = '127.0.0.1';
-        $mail->Port = 1025;
-        $mail->SMTPAutoTLS = false;
-        $mail->SMTPSecure = false;
-        $mail->SMTPAuth = false;
-
-        $mail->setFrom($sender);
-        $mail->addAddress($recipient);
-
-        $mail->Subject = $subject;
-        $mail->Body    = $body;
-
-        $mail->send();
-        $success = 'El correo ha sido enviado';
-    } catch (Exception $e) {
-        $error = "El correo no pudo ser enviado. Error: {$mail->ErrorInfo}";
+    // Validar y sanitizar inputs
+    $sender = filter_input(INPUT_POST, 'sender', FILTER_SANITIZE_EMAIL);
+    $recipient = filter_input(INPUT_POST, 'recipient', FILTER_SANITIZE_EMAIL);
+    $subject = filter_input(INPUT_POST, 'subject', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    $body = filter_input(INPUT_POST, 'body', FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+    
+    // Validar que los emails sean válidos
+    if (!$sender || !filter_var($sender, FILTER_VALIDATE_EMAIL)) {
+        $error = 'El remitente no es una dirección de correo válida.';
+    } elseif (!$recipient || !filter_var($recipient, FILTER_VALIDATE_EMAIL)) {
+        $error = 'El destinatario no es una dirección de correo válida.';
+    } elseif (!$subject || trim($subject) === '') {
+        $error = 'El asunto no puede estar vacío.';
+    } elseif (!$body || trim($body) === '') {
+        $error = 'El cuerpo del mensaje no puede estar vacío.';
+    } else {
+        // Limitar longitud de los campos para prevenir abusos
+        $subject = substr($subject, 0, 255);
+        $body = substr($body, 0, 10000);
+        
+        $mail = new PHPMailer(true);
+    
+        try {
+            $mail->isSMTP();
+            $mail->Host = '127.0.0.1';
+            $mail->Port = 1025;
+            $mail->SMTPAutoTLS = false;
+            $mail->SMTPSecure = false;
+            $mail->SMTPAuth = false;
+    
+            $mail->setFrom($sender);
+            $mail->addAddress($recipient);
+    
+            $mail->Subject = $subject;
+            $mail->Body    = $body;
+    
+            $mail->send();
+            $success = 'El correo ha sido enviado';
+        } catch (Exception $e) {
+            $error = "El correo no pudo ser enviado. Error: {$mail->ErrorInfo}";
+        }
     }
 }
 ?>
