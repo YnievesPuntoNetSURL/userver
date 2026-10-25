@@ -13,7 +13,8 @@ LABEL description="Alpine 3.23, PHP 8.5 FPM with Nginx 1.28, Composer, NodeJS 24
 WORKDIR /var/www/html
 
 # Install packages and remove default server definition
-RUN apk add --no-cache \
+# Security baseline: update Alpine packages before installing PHP.
+RUN apk update && apk upgrade --no-cache && apk add --no-cache \
   bash \
   busybox-suid \
   curl \
